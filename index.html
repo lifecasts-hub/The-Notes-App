@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="1.1";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="1.2";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -24,8 +24,8 @@ g.onsuccess=function(){var h=g.result;if(!h||h.indexOf("/*LC-OTA*/")<0)return fa
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#000000">
 <style>
-:root{--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;--glass:rgba(255,255,255,.72);--glass2:rgba(255,255,255,.55);--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.1);--accent:#9a5b1e;--win:#fff;--soft:#f5f5f7}
-:root[data-theme="dark"]{--glass:rgba(40,40,44,.72);--glass2:rgba(40,40,44,.55);--ink:#f5f5f7;--muted:#a1a1a6;--line:rgba(255,255,255,.12);--accent:#d9a05b;--win:#1c1c1e;--soft:#2c2c2e}
+:root{--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;--glass:rgba(255,255,255,.72);--glass2:rgba(255,255,255,.55);--ink:#141312;--muted:#77726d;--line:#e6e3df;--accent:#e0560c;--win:#fbfaf8;--soft:#f0eeeb}
+:root[data-theme="dark"]{--glass:rgba(40,40,44,.72);--glass2:rgba(40,40,44,.55);--ink:#f4f1ee;--muted:#8e8a86;--line:#2a2826;--accent:#ff6a1a;--win:#000;--soft:#1c1b1a}
 html,body{margin:0;height:100%;background:var(--win);font-family:var(--font);-webkit-tap-highlight-color:transparent}
 #app{position:fixed;inset:0;padding-top:env(safe-area-inset-top,0px)}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
@@ -171,6 +171,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 #vAcc h3{margin:26px 6px 8px}#accX{color:var(--accent);font-weight:600;font-size:17px;padding:8px}#vAcc .ver{text-align:center;color:var(--muted);font-size:13px;margin-top:22px}
 
 .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:99;background:rgba(0,0,0,.82);color:#fff;padding:10px 16px;border-radius:20px;font:14px var(--font)}
+@keyframes tbp{0%{transform:scale(1)}40%{transform:scale(.82)}100%{transform:scale(1)}}@keyframes tbs{from{transform:scale(.6) rotate(-12deg)}to{transform:none}}.nx .tb .tp{animation:tbp .32s cubic-bezier(.3,1.6,.5,1)}.nx .tb .tp svg{animation:tbs .3s cubic-bezier(.3,1.6,.5,1)}@media (prefers-reduced-motion:reduce){.nx .tb .tp,.nx .tb .tp svg{animation:none}}
 </style>
 </head>
 <body>
@@ -451,5 +452,6 @@ window.lcCheckUpdate=function(){var u=window.lcUpd;u?get(u.U):check(true)};
 setTimeout(check,3000);window.addEventListener("online",function(){setTimeout(check,2000)});setInterval(check,6*36e5);
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-last>36e5)check()});
 })()</script>
+<script>document.addEventListener("pointerdown",e=>{const b=e.target.closest(".nx .tb button,.nx .tb label");if(!b)return;b.classList.remove("tp");void b.offsetWidth;b.classList.add("tp")});document.addEventListener("animationend",e=>{e.target.classList&&e.target.classList.remove("tp")})</script>
 </body>
 </html>
