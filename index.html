@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.1";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.2";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -73,7 +73,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .nx .nb>*{pointer-events:auto}.nx .tbs{position:relative;display:flex;background:var(--soft);border:1px solid var(--line);border-radius:40px;padding:4px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
 .nx .tbs button{position:relative;z-index:1;border:0;background:none;color:var(--ink);font:600 12px var(--font);border-radius:36px;padding:7px 18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}.nx .tbs button.on{color:var(--accent)}
 .nx .tbs svg,.nx .rd svg{width:24px;height:24px}.nx #nPill{position:absolute;top:4px;bottom:4px;left:0;border-radius:36px;background:var(--win);transition:transform .35s cubic-bezier(.3,.7,.3,1),width .35s cubic-bezier(.3,.7,.3,1)}
-.nx .rd{width:58px;height:58px;border-radius:29px;border:1px solid var(--line);background:var(--soft);color:var(--accent);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.12)}.nx .rd:active,.nx .tbs button:active{transform:scale(.94)}
+.nx .rd{width:58px;height:58px;border-radius:29px;border:1px solid var(--line);background:var(--soft);color:var(--accent);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.12)}.nx .rd:active,.nx .tbs button:active{transform:scale(.94)}.nx.srch .tbs{padding:0;border-radius:50%}.nx.srch #nSr{width:58px;height:58px;padding:0;border-radius:50%;display:grid;place-items:center;gap:0}
 .nx #nL{padding-bottom:96px!important}.nx .rt,.nx .vw{padding-bottom:110px!important}.nx #nNew,.nx .sr{display:none}
 .nx .rt::first-line{font-size:26px;font-weight:700;letter-spacing:-.02em}
 .nx .ed .tb{display:none;position:absolute;left:50%;bottom:84px;transform:translateX(-50%);width:min(560px,calc(100% - 24px));flex-wrap:wrap;justify-content:center;gap:6px;padding:12px;border:1px solid var(--line);border-radius:24px;background:var(--soft);box-shadow:0 10px 34px rgba(0,0,0,.18);z-index:6;overflow:visible;height:auto;max-height:60vh;overflow:auto;user-select:none}
@@ -350,7 +350,7 @@ function notes(el){
  qq("nMore").onclick=e=>{e.stopPropagation();let m=X.querySelector(".nmo");if(m){m.remove();return}m=E("div",{className:"nmo"});const r=qq("nMore").getBoundingClientRect(),R=X.getBoundingClientRect();m.style.top=(r.bottom-R.top+6)+"px";m.style.right=(R.right-r.right)+"px";
   [[I.n,"Nouvelle note",()=>qq("nNew").click()],['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',"Rechercher",()=>qq("nSr").click()]].forEach(([i,l,f])=>{const b=E("button",{innerHTML:i+l});b.onclick=()=>{m.remove();f()};m.append(b)});
   X.append(m);setTimeout(()=>document.addEventListener("click",()=>m.remove(),{once:true}))};
- const S2=qq("nSr");S2.onclick=()=>{const on=X.classList.toggle("srch");S2.innerHTML=on?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Rechercher';S2.classList.toggle("on",on);if(on){X.dataset.v="l";X.classList.remove("fmt");qq("nQ2").focus()}else{qq("nQ2").value="";qs="";list()}};
+ const S2=qq("nSr");S2.onclick=()=>{if(!X.classList.contains("srch"))goHome();const on=X.classList.toggle("srch");S2.innerHTML=on?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Rechercher';S2.classList.toggle("on",on);if(on){X.dataset.v="l";X.classList.remove("fmt");qq("nQ2").focus()}else{qq("nQ2").value="";qs="";list()}};
  qq("nQ2").oninput=e=>{qs=e.target.value.toLowerCase();list()};
  if(0)qq("nQ").oninput=e=>{qs=e.target.value.toLowerCase();list()};
  qq("nNew").onclick=()=>{const n={id:"n"+Date.now(),t:"",m:Date.now()};S.notes.push(n);save();if(fol==="bible")fol="mine";cur=n;X.dataset.v="e";render();qq("nRt").focus()};
