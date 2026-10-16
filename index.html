@@ -317,15 +317,11 @@ function notes(el){
    ["Supprimer",'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>',()=>del(n),1]];
   A.forEach(([t,i,f,red])=>{const b=E("button",{className:red?"rd2":""});b.innerHTML="<span>"+esc(t)+"</span>"+i;b.onclick=e=>{e.stopPropagation();W.remove();f()};M.append(b)});
   W.onclick=()=>W.remove();W.append(M);document.body.append(W);const h=M.offsetHeight;M.style.left=Math.min(Math.max(12,r.left+12),innerWidth-M.offsetWidth-12)+"px";M.style.top=(r.bottom+8+h>innerHeight-12?Math.max(12,r.top-h-8):r.bottom+8)+"px";if(navigator.vibrate)navigator.vibrate(12)}
- function bindIt(d,n){let x0,y0,dx=0,lp,drag=false;d.style.touchAction="pan-y";
-  if(!n.ro){d.insertAdjacentHTML("afterbegin",'<button class="swd" aria-label="Supprimer">'+I.d+'</button>');d.querySelector(".swd").onclick=e=>{e.stopPropagation();del(n)}}
+ function bindIt(d,n){let x0,y0,lp;d.style.touchAction="pan-y";
   d.oncontextmenu=e=>{e.preventDefault();menu(n,d)};
-  d.onpointerdown=e=>{x0=e.clientX;y0=e.clientY;dx=0;drag=false;d._sw=false;lp=setTimeout(()=>{d._sw=true;menu(n,d);setTimeout(()=>d._sw=false,400)},520)};
-  d.onpointermove=e=>{if(x0==null)return;const mx=e.clientX-x0,my=e.clientY-y0;if(Math.abs(mx)>8||Math.abs(my)>8)clearTimeout(lp);
-   if(!n.ro&&!drag&&Math.abs(mx)>12&&Math.abs(mx)>Math.abs(my)){drag=true;d.setPointerCapture(e.pointerId)}
-   if(drag){dx=Math.min(0,mx+(d.classList.contains("op")?-84:0));d.style.transition="none";d.querySelector(".tx").parentNode.style.setProperty("--x",dx+"px")}};
-  d.onpointerup=d.onpointercancel=()=>{clearTimeout(lp);x0=null;if(!drag)return;d._sw=true;setTimeout(()=>d._sw=false,50);d.style.transition="";
-   if(dx<-220){del(n);return}const o=dx<-40;d.classList.toggle("op",o);d.style.setProperty("--x",o?"-84px":"0px");if(o)Lw.querySelectorAll(".it.op").forEach(z=>{if(z!==d){z.classList.remove("op");z.style.setProperty("--x","0px")}})}}
+  d.onpointerdown=e=>{x0=e.clientX;y0=e.clientY;d._sw=false;lp=setTimeout(()=>{d._sw=true;menu(n,d);setTimeout(()=>d._sw=false,400)},520)};
+  d.onpointermove=e=>{if(x0==null)return;if(Math.abs(e.clientX-x0)>8||Math.abs(e.clientY-y0)>8)clearTimeout(lp)};
+  d.onpointerup=d.onpointercancel=()=>{clearTimeout(lp);x0=null}}
  const empty=n=>!n.ro&&!(n.t||"").trim()&&!/<(img|table|hr)/i.test(n.h||"");
  function render(){const ke=X.dataset.v==="e"&&cur;const bad=S.notes.filter(n=>empty(n)&&!(ke&&n===cur));if(bad.length){S.notes=S.notes.filter(n=>!bad.includes(n));save();if(cur&&bad.includes(cur)){cur=null;delete Ed.dataset.id}}if(!(cur&&cur.ro&&S.editBible))BN=bibleNotes();folders();list();editor();requestAnimationFrame(pill)}
  const pill=()=>{const P=qq("nPill"),b=qq("nTabs").querySelector("button");P.style.width=b.offsetWidth+"px";P.style.transform="translateX("+b.offsetLeft+"px)";qq("nTabs").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
