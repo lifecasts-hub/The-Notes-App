@@ -20,8 +20,8 @@ r.onsuccess=function(){try{var g=r.result.transaction("f").objectStore("f").get(
 g.onsuccess=function(){var h=g.result;if(!h||h.indexOf("/*LC-OTA*/")<0)return fail();window.LC_OTA_VER=v;document.open();document.write(h);document.close()}}catch(e){fail()}};
 })()</script>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png?v=2">
+<link rel="apple-touch-icon" href="icon-192.png?v=2">
 <meta name="theme-color" content="#000000">
 <style>
 :root{--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;--glass:rgba(255,255,255,.72);--glass2:rgba(255,255,255,.55);--ink:#141312;--muted:#77726d;--line:#e6e3df;--accent:#e0560c;--win:#fbfaf8;--soft:#f0eeeb}
