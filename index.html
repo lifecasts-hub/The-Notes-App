@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.4";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.5";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -206,8 +206,8 @@ function goHome(){const X=q("app").querySelector(".nx");q("vAcc").hidden=true;if
 window.toast=toast;
 /* Notes de la Bible : fusionne toutes les clés lsg.notes / lsg.notes.<compte> de cet appareil (compte actuel en priorité) */
 /* Notes de la Bible du compte Google (Firestore users/<uid>/bible/data), utiles quand le stockage local est séparé (iPhone écran d'accueil) */
-let CBN={},CBT=0,cbOff=null;
-function cbWatch(uid){if(cbOff){cbOff();cbOff=null}CBN={};if(!uid||!FD)return;try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot(s=>{const d=s.data()||{};CBN=d.notes||{};reload()},()=>{})}catch(e){}}
+let CBN={},CBT=0,cbOff=null;try{const c=localStorage.getItem("lc.current")||"";if(c.startsWith("f:"))CBN=JSON.parse(localStorage.getItem("lcn.cbn."+c)||"{}")}catch(e){}
+function cbWatch(uid){if(cbOff){cbOff();cbOff=null}if(!uid||!FD){CBN={};return}try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot({includeMetadataChanges:false},s=>{const d=s.data()||{},n=d.notes||{},j=JSON.stringify(n);if(j===JSON.stringify(CBN))return;CBN=n;try{localStorage.setItem("lcn.cbn.f:"+uid,j)}catch(e){}reload()},()=>{})}catch(e){}}
 function bibleNotes(){const out={};for(const r in CBN){const v=CBN[r],t=typeof v==="string"?v:(v&&(v.t||v.text))||"";if(t)out[r]={t,k:"fb"}}let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}
  const keys=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.notes(\.|$)/.test(k))keys.push(k)}}catch(e){}
  keys.sort((a,b)=>(b==="lsg.notes."+c)-(a==="lsg.notes."+c));
