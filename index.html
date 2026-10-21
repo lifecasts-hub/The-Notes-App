@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.2";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.3";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -205,13 +205,16 @@ function close(){}
 function goHome(){const X=q("app").querySelector(".nx");q("vAcc").hidden=true;if(X)X.selT("[data-t=home]")}
 window.toast=toast;
 /* Notes de la Bible : fusionne toutes les clés lsg.notes / lsg.notes.<compte> de cet appareil (compte actuel en priorité) */
-function bibleNotes(){const out={};let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}
+/* Notes de la Bible du compte Google (Firestore users/<uid>/bible/data), utiles quand le stockage local est séparé (iPhone écran d'accueil) */
+let CBN={},CBT=0,cbOff=null;
+function cbWatch(uid){if(cbOff){cbOff();cbOff=null}CBN={};if(!uid||!FD)return;try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot(s=>{const d=s.data()||{};CBN=d.notes||{};reload()},()=>{})}catch(e){}}
+function bibleNotes(){const out={};for(const r in CBN){const v=CBN[r],t=typeof v==="string"?v:(v&&(v.t||v.text))||"";if(t)out[r]={t,k:"fb"}}let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}
  const keys=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.notes(\.|$)/.test(k))keys.push(k)}}catch(e){}
  keys.sort((a,b)=>(b==="lsg.notes."+c)-(a==="lsg.notes."+c));
  keys.forEach(k=>{try{const o=JSON.parse(localStorage.getItem(k)||"{}");for(const r in o){const v=o[r],t=typeof v==="string"?v:(v&&(v.t||v.text))||"";if(t&&!(r in out))out[r]={t,k}}}catch(e){}});
  return Object.entries(out).map(([k,v])=>({id:"b:"+k,key:k,src:v.k,ref:k.replace("/"," ").replace("/",":"),t:v.t,ro:1}))}
 /* Écrit une note modifiée dans l'app Bible (même clé de stockage) */
-function saveBibleNote(n){try{const o=JSON.parse(localStorage.getItem(n.src)||"{}");if(n.t.trim())o[n.key]=n.t.trim();else delete o[n.key];localStorage.setItem(n.src,JSON.stringify(o))}catch(e){}}
+function saveBibleNote(n){if(n.src==="fb"){if(n.t.trim())CBN[n.key]=n.t.trim();else delete CBN[n.key];clearTimeout(CBT);CBT=setTimeout(()=>{if(fbUid)FD.doc("users/"+fbUid).collection("bible").doc("data").update({notes:CBN,at:Date.now()}).catch(()=>{})},800);return}try{const o=JSON.parse(localStorage.getItem(n.src)||"{}");if(n.t.trim())o[n.key]=n.t.trim();else delete o[n.key];localStorage.setItem(n.src,JSON.stringify(o))}catch(e){}}
 /* Références bibliques dans les notes → liens vers la Bible (#LIV/chap/versets) */
 const BK=[["GEN","Genèse|Gn|Gen"],["EXO","Exode|Ex"],["LEV","Lévitique|Lv"],["NUM","Nombres|Nb"],["DEU","Deutéronome|Dt"],["JOS","Josué|Jos"],["JDG","Juges|Jg"],["RUT","Ruth|Rt"],["1SA","1 ?Samuel|1 ?S"],["2SA","2 ?Samuel|2 ?S"],["1KI","1 ?Rois|1 ?R"],["2KI","2 ?Rois|2 ?R"],["1CH","1 ?Chroniques|1 ?Ch"],["2CH","2 ?Chroniques|2 ?Ch"],["EZR","Esdras|Esd"],["NEH","Néhémie|Né"],["EST","Esther|Est"],["JOB","Job"],["PSA","Psaumes?|Ps"],["PRO","Proverbes|Pr"],["ECC","Ecclésiaste|Ec"],["SNG","Cantique des Cantiques|Ct"],["ISA","Ésaïe|Esaïe|Isaïe|Es|És"],["JER","Jérémie|Jr"],["LAM","Lamentations|Lm"],["EZK","Ézéchiel|Ezéchiel|Ez|Éz"],["DAN","Daniel|Dn"],["HOS","Osée|Os"],["JOL","Joël|Jl"],["AMO","Amos|Am"],["OBA","Abdias|Ab"],["JON","Jonas|Jon"],["MIC","Michée|Mi"],["NAM","Nahum|Na"],["HAB","Habacuc|Ha"],["ZEP","Sophonie|So"],["HAG","Aggée|Ag"],["ZEC","Zacharie|Za"],["MAL","Malachie|Ml"],["MAT","Matthieu|Mt"],["MRK","Marc|Mc"],["LUK","Luc|Lc"],["JHN","Jean|Jn"],["ACT","Actes|Ac"],["ROM","Romains|Rm"],["1CO","1 ?Corinthiens|1 ?Co"],["2CO","2 ?Corinthiens|2 ?Co"],["GAL","Galates|Ga"],["EPH","Éphésiens|Ephésiens|Ep"],["PHP","Philippiens|Ph"],["COL","Colossiens|Col"],["1TH","1 ?Thessaloniciens|1 ?Th"],["2TH","2 ?Thessaloniciens|2 ?Th"],["1TI","1 ?Timothée|1 ?Tm"],["2TI","2 ?Timothée|2 ?Tm"],["TIT","Tite|Tt"],["PHM","Philémon|Phm"],["HEB","Hébreux|He|Hé"],["JAS","Jacques|Jc"],["1PE","1 ?Pierre|1 ?P"],["2PE","2 ?Pierre|2 ?P"],["1JN","1 ?Jean|1 ?Jn"],["2JN","2 ?Jean|2 ?Jn"],["3JN","3 ?Jean|3 ?Jn"],["JUD","Jude|Jd"],["REV","Apocalypse|Ap"]];
 const BKM={};BK.forEach(([c,n])=>n.split("|").forEach(x=>BKM[x.replace(" ?"," ").toLowerCase()]=c));BKM.psaume=BKM.psaumes="PSA";
@@ -406,7 +409,7 @@ function fbPush(){if(!fbOk())return;clearTimeout(fbT);fbT=setTimeout(()=>{if(!fb
 function fbApply(d,merge){fbMute=true;const m={};(merge?S.notes||[]:[]).forEach(n=>m[n.id]=n);(d.notes||[]).forEach(n=>{if(!m[n.id]||(n.m||0)>=(m[n.id].m||0))m[n.id]=n});if(!merge)(S.notes||[]).forEach(n=>{if(!m[n.id]&&(n.m||0)>fbAt)m[n.id]=n});S.notes=Object.values(m);save();reload();fbMute=false}
 async function fbIn(){if(!FA)return toast("Connexion indisponible (hors ligne ?)");const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:"select_account"});
   try{await FA.signInWithPopup(pr)}catch(e){if(/popup-blocked|operation-not-supported/.test(e.code||""))FA.signInWithRedirect(pr);else if(!/cancelled|closed/.test(e.code||""))toast("Connexion refusée : "+(e.code||""))}}
-async function fbUser(u){if(fbOff){fbOff();fbOff=null}fbMute=true;
+async function fbUser(u){if(fbOff){fbOff();fbOff=null}fbMute=true;cbWatch(u?u.uid:"");
   if(!u){fbUid="";if(ACC.some(a=>a.fb)){ACC=ACC.filter(a=>!a.fb);useAcc(ACC.some(a=>a.id===CUR)?CUR:ACC[0]?ACC[0].id:"")}drawAcct();return}
   const id="f:"+u.uid;let a=ACC.find(x=>x.id===id),neu=!a;
   if(neu){a={id,p:"google",fb:1};ACC.push(a);
