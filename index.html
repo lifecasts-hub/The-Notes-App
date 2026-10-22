@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.6";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.7";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -407,7 +407,7 @@ function fbPush(){if(!fbOk())return;clearTimeout(fbT);fbT=setTimeout(()=>{if(!fb
   Promise.all([u.set({name:a.name||"",email:a.email||""},{merge:true}),
     u.collection("notes").doc("data").set({notes:S.notes||[],at:fbAt})]).catch(()=>toast("Synchro en attente (hors ligne ?)"))},800)}
 function fbApply(d,merge){fbMute=true;const m={};(merge?S.notes||[]:[]).forEach(n=>m[n.id]=n);(d.notes||[]).forEach(n=>{if(!m[n.id]||(n.m||0)>=(m[n.id].m||0))m[n.id]=n});if(!merge)(S.notes||[]).forEach(n=>{if(!m[n.id]&&(n.m||0)>fbAt)m[n.id]=n});S.notes=Object.values(m);save();reload();fbMute=false}
-async function fbIn(){if(!FA)return toast("Connexion indisponible (hors ligne ?)");const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:"select_account"});
+async function fbIn(){if(location.protocol==="file:"){location.href="https://lifecasts-hub.github.io/?app=notes";return}if(!FA)return toast("Connexion indisponible (hors ligne ?)");const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:"select_account"});
   try{await FA.signInWithPopup(pr)}catch(e){if(/popup-blocked|operation-not-supported/.test(e.code||""))FA.signInWithRedirect(pr);else if(!/cancelled|closed/.test(e.code||""))toast("Connexion refusée : "+(e.code||""))}}
 async function fbUser(u){if(fbOff){fbOff();fbOff=null}fbMute=true;cbWatch(u?u.uid:"");
   if(!u){fbUid="";if(ACC.some(a=>a.fb)){ACC=ACC.filter(a=>!a.fb);useAcc(ACC.some(a=>a.id===CUR)?CUR:ACC[0]?ACC[0].id:"")}drawAcct();return}
@@ -429,7 +429,8 @@ const FBV="https://www.gstatic.com/firebasejs/10.14.1/firebase-";
 script(FBV+"app-compat.js").then(()=>Promise.all(["auth","firestore"].map(m=>script(FBV+m+"-compat.js")))).then(()=>{
   firebase.initializeApp(FBC);FA=firebase.auth();FD=firebase.firestore();
   try{FD.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
-  FA.getRedirectResult().catch(()=>{});FA.onAuthStateChanged(fbUser)}).catch(()=>{});
+  FA.getRedirectResult().catch(()=>{});FA.onAuthStateChanged(fbUser);
+  const m=/lcidt=([\w.-]+)/.exec(location.hash);if(m){history.replaceState(null,"",location.pathname);FA.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(m[1])).catch(e=>toast("Connexion refusée : "+(e.code||"")))}}).catch(()=>{});
 
 q("accX").onclick=goHome;
 window.fbPush=()=>fbPush();window.notes=notes;reload();
