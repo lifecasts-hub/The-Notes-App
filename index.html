@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.5";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.6";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -384,7 +384,7 @@ function drawAcct(){const a=acc();
   $("acct").innerHTML=`<div class="card" style="margin-top:18px"><div class="em"><i class="av o">${SV('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.2 18.5c1.2-2.3 3.3-3.5 5.8-3.5s4.6 1.2 5.8 3.5"/>')}</i><span>${esc(a.email||PV[a.p])}</span></div>`
     +ACC.map(x=>`<button class="pb" data-id="${escA(x.id)}" role="menuitemradio" aria-checked="${x.id===CUR}">${av(x)}<span>${esc(x.name)}<small>${PV[x.p]}</small></span>${x.id===CUR?SV('<path d="M5 12.5l4.5 4.5L19 7.5"/>'):""}</button>`).join("")
     +`<button class="pb" id="addA" aria-expanded="${adding}"><i class="av o">${SV('<path d="M12 5v14M5 12h14"/>')}</i><span>Ajouter un compte</span></button>${adding?goBtn("lcadd"):""}</div>`
-    +`<h3>Ce compte</h3><div class="card"><div class="srow"><span>Âge<small>${age?age+" an"+(age>1?"s":""):"Non renseigné"}</small></span><button class="ab" id="ageB">Modifier</button></div>`
+    +`<h3>Ce compte</h3><div class="card"><div class="srow"><span>Âge<small>${age?age+" an"+(age>1?"s":""):"Non renseigné"}</small></span><button class="ab" id="ageB">Modifier sur LifeCasts</button></div>`
     +`<div class="srow"><span>Se déconnecter<small>Les données du compte restent sur cet appareil</small></span><button class="ab" id="outB">Déconnexion</button></div>`
     +`<div class="srow"><span class="danger">Supprimer le compte<small>Et ses notes, sur cet appareil</small></span><button class="ab danger" id="delB">Supprimer</button></div></div>`;
   twice("delB",()=>signOut(true))}
@@ -396,7 +396,7 @@ $("acct").onclick=e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.p)return fbIn();
   if(b.dataset.id){if(b.dataset.id!==CUR){useAcc(b.dataset.id);toast("Compte : "+acc().name)}return}
   if(b.id==="addA"){adding=!adding;drawAcct();return}
-  if(b.id==="ageB")return askAge();
+  if(b.id==="ageB")return void open("https://lifecasts-hub.github.io/#compte","_blank");
   if(b.id==="outB")signOut(false)};
 
 // Firebase (mêmes réglages que The Bible App). Données : users/{uid} (profil, âge), users/{uid}/notes/data (notes). Hors ligne : invité.
@@ -404,7 +404,7 @@ const FBC={apiKey:"AIzaSyBXXuPijD1GRpRQV3OfnWK_zHGJOoLLmeM",authDomain:"lifecast
 let FA=null,FD=null,fbUid="",fbT=0,fbMute=true,fbAt=0,fbOff=null;
 const fbOk=()=>fbUid&&!fbMute&&CUR==="f:"+fbUid;
 function fbPush(){if(!fbOk())return;clearTimeout(fbT);fbT=setTimeout(()=>{if(!fbOk())return;const a=acc(),u=FD.doc("users/"+fbUid);fbAt=Date.now();
-  Promise.all([u.set({by:a.by||0,name:a.name||"",email:a.email||""},{merge:true}),
+  Promise.all([u.set({name:a.name||"",email:a.email||""},{merge:true}),
     u.collection("notes").doc("data").set({notes:S.notes||[],at:fbAt})]).catch(()=>toast("Synchro en attente (hors ligne ?)"))},800)}
 function fbApply(d,merge){fbMute=true;const m={};(merge?S.notes||[]:[]).forEach(n=>m[n.id]=n);(d.notes||[]).forEach(n=>{if(!m[n.id]||(n.m||0)>=(m[n.id].m||0))m[n.id]=n});if(!merge)(S.notes||[]).forEach(n=>{if(!m[n.id]&&(n.m||0)>fbAt)m[n.id]=n});S.notes=Object.values(m);save();reload();fbMute=false}
 async function fbIn(){if(!FA)return toast("Connexion indisponible (hors ligne ?)");const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:"select_account"});
@@ -421,7 +421,7 @@ async function fbUser(u){if(fbOff){fbOff();fbOff=null}fbMute=true;cbWatch(u?u.ui
   try{const ud=FD.doc("users/"+u.uid),[p,c]=await Promise.all([ud.get(),ud.collection("notes").doc("data").get()]);
     if(p.exists&&p.data().by)a.by=p.data().by;fbApply(c.exists?c.data():{},true);fbAt=c.exists?c.data().at||0:0;
     fbOff=ud.collection("notes").doc("data").onSnapshot(s=>{const d=s.data();if(d&&!s.metadata.hasPendingWrites&&d.at>fbAt&&CUR===id){fbAt=d.at;fbApply(d,false)}});
-    saveAcc();fbPush();if(neu)toast("Connecté : "+a.name);if(!a.by)askAge()}
+    saveAcc();fbPush();if(neu)toast("Connecté : "+a.name)}
   catch(e){fbMute=false;saveAcc();toast("Synchro indisponible pour l'instant")}
   drawAcct()}
 const script=u=>new Promise((ok,ko)=>{const e=document.createElement("script");e.src=u;e.onload=ok;e.onerror=ko;document.head.append(e)});
