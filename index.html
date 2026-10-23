@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.11";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.12";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -187,12 +187,12 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .lcbk svg,.lcchev{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .lcchev{margin-left:auto;opacity:.4;width:16px;height:16px;flex:none}
 .lchero{padding:18px 16px!important;display:block!important;margin-bottom:22px!important}.lchero h2{margin:12px 0 4px;font-size:22px;font-weight:700}.lchero p{margin:0;opacity:.6;font-size:14px;line-height:1.4}
-.lcsq{width:32px!important;height:32px;border-radius:8px;background:#8e8e93;display:inline-grid!important;place-items:center;flex:0 0 32px!important;padding:0!important}.lcsq svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round}
+.lcsq{width:32px!important;height:32px;border-radius:8px;background:#8e8e93;display:inline-grid!important;place-items:center;flex:0 0 32px!important;padding:0!important}.lcsq svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .lcsq.big{width:56px!important;height:56px;border-radius:14px;flex-basis:56px!important}.lcsq.big svg{width:32px;height:32px}
 .lcsetb{width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;display:flex!important;align-items:center;gap:12px}
 .lcsetc{margin-top:22px!important}</style>
 <script>/* LifeCasts : structure commune — ligne « Réglages › » du Compte et sous-page Réglages (style iOS) */
-var LCG='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.2 7.5l2.1 1.2M17.7 15.3l2.1 1.2M4.2 16.5l2.1-1.2M17.7 8.7l2.1-1.2"/><circle cx="12" cy="12" r="7"/></svg>';
+var LCG='<svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
 function lcSetCard(){return '<div class="card lcsetc"><button class="srow lcsetb" type="button"><span class="lcsq">'+LCG+'</span><span>Réglages</span><svg class="lcchev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button></div>'}
 function lcBg(el){for(var e=el;e;e=e.parentElement){var b=getComputedStyle(e).backgroundColor;if(b&&!/rgba\(0, 0, 0, 0\)|transparent/.test(b))return b}return getComputedStyle(document.documentElement).backgroundColor||"#fff"}
 function lcSub(node,desc,host,cls,onClose){host=host||node.parentNode;var mark=document.createComment("lcset"),wasH=node.hidden;node.parentNode.insertBefore(mark,node);
