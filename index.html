@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.12";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.13";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -387,7 +387,7 @@ function openAcc(){const X=q("app").querySelector(".nx"),V=q("vAcc");if(X){X.app
 function drawSet(){q("set").innerHTML=lcSetCard()+'<div id="setBody" hidden><div class="card"><div class="srow"><span>Thème</span><select id="thS" class="ab">'+[["auto","Système"],["light","Clair"],["dark","Sombre"]].map(x=>'<option value="'+x[0]+'"'+((S.theme||"auto")===x[0]?" selected":"")+'>'+x[1]+'</option>').join("")+'</select></div>'
  +(WEB?'':'<div class="srow"><span id="lcUpTxt">Mises à jour<small>Automatiques depuis LifeCasts</small></span><button class="ab" id="upB">Vérifier</button></div>')+'</div><p class="ver">Notes LifeCasts · Version '+esc(window.LC_VER||"")+'</p></div>';
  q("set").querySelector(".lcsetb").onclick=()=>lcSub(q("setBody"),"Apparence et mises à jour de Notes sur cet appareil.",q("vAcc"));
- q("thS").onchange=e=>{S.theme=e.target.value;save();theme()};if(q("upB"))q("upB").onclick=()=>window.lcCheckUpdate&&lcCheckUpdate()}
+ q("thS").onchange=e=>{S.theme=e.target.value;save();theme()};if(q("upB"))q("upB").onclick=()=>window.lcCheckUpdate&&lcCheckUpdate();lcDz(q("setBody"),!!acc(),"Efface ses notes sur cet appareil")}
 const $=q;
 
 const PV={google:"Google",apple:"Apple (iCloud)",microsoft:"Microsoft",lifecasts:"LifeCasts"};
@@ -400,6 +400,7 @@ function toast(t){const d=document.createElement("div");d.className="toast";d.te
 function twice(id,fn){let t=0;const b=$(id),l=b.textContent;b.onclick=()=>{if(t){clearTimeout(t);t=0;b.textContent=l;fn();return}b.textContent="Confirmer ?";t=setTimeout(()=>{t=0;b.textContent=l},3000)}}
 const goBtn=c=>`<button class="lcgo${c?" "+c:""}" data-p="google"><i class="lcm" aria-hidden="true"></i>Se connecter à LifeCasts</button>`;
 let adding=false;
+function lcDz(host,on,txt){if(!host)return;let d=host.querySelector("#lcdz");if(!d){d=document.createElement("div");d.id="lcdz";const v=host.querySelector(".ver");v?v.before(d):host.appendChild(d)}d.hidden=!on;d.innerHTML=on?`<h3 style="font-size:13px;text-transform:uppercase;opacity:.6;font-weight:500;margin:24px 16px 6px">Zone de danger</h3><div class="card"><div class="srow"><span class="danger">Retirer ce compte de l'appareil<small>${txt}. Le compte LifeCasts n'est pas supprimé.</small></span><button class="ab danger" id="delB">Retirer</button></div></div>`:"";if(on)twice("delB",()=>signOut(true))}
 function drawAcct(){const a=acc();
   if(!a){$("acct").innerHTML=`<div class="lcin"><i class="lcm" aria-hidden="true"></i><b>Votre compte LifeCasts</b><p>Retrouvez vos notes et vos réglages, sur le site et dans toutes les applications LifeCasts. (Aucun mot de passe à créer)</p>${goBtn()}</div>`;return}
   const age=a.by?yr()-a.by:0;
@@ -408,10 +409,10 @@ function drawAcct(){const a=acc();
     +`<button class="pb" id="addA" aria-expanded="${adding}"><i class="av o">${SV('<path d="M12 5v14M5 12h14"/>')}</i><span>Ajouter un compte</span></button>${adding?goBtn("lcadd"):""}</div>`
     +`<h3>Ce compte</h3><div class="card"><div class="srow"><span>Âge<small>${age?age+" an"+(age>1?"s":""):"Non renseigné"}</small></span><button class="ab" id="ageB">Modifier sur LifeCasts</button></div>`
     +`<div class="srow"><span>Se déconnecter<small>Les données du compte restent sur cet appareil</small></span><button class="ab" id="outB">Déconnexion</button></div>`
-    +`<div class="srow"><span class="danger">Supprimer le compte<small>Et ses notes, sur cet appareil</small></span><button class="ab danger" id="delB">Supprimer</button></div></div>`;
-  twice("delB",()=>signOut(true))}
+    +`</div>`;
+  lcDz(q("setBody"),!!a,"Efface ses notes sur cet appareil")}
 function useAcc(id){if(!CUR)G=S.notes;CUR=id;saveAcc();S.notes=CUR?ls.g("lcn."+CUR,[]):G;reload();drawAcct()}
-function signOut(del){const a=acc();if(del)try{localStorage.removeItem("lcn."+CUR)}catch(e){}if(a&&a.fb&&FA&&a.id==="f:"+fbUid){fbUid="";FA.signOut().catch(()=>{})}ACC=ACC.filter(a=>a.id!==CUR);adding=false;useAcc(ACC[0]?ACC[0].id:"");toast(del?"Compte supprimé":"Déconnecté")}
+function signOut(del){const a=acc();if(del)try{localStorage.removeItem("lcn."+CUR)}catch(e){}if(a&&a.fb&&FA&&a.id==="f:"+fbUid){fbUid="";FA.signOut().catch(()=>{})}ACC=ACC.filter(a=>a.id!==CUR);adding=false;useAcc(ACC[0]?ACC[0].id:"");toast(del?"Compte retiré de l'appareil":"Déconnecté")}
 function askAge(){const a=acc(),d=document.createElement("div");d.className="dlg";d.innerHTML='<div><b>Quel âge avez-vous ?</b><input id="ageI" type="number" min="1" max="120" inputmode="numeric" placeholder="Âge"><button id="ageOk">Enregistrer</button></div>';document.body.append(d);
   $("ageI").value=a.by?yr()-a.by:"";$("ageI").focus();$("ageOk").onclick=()=>{const v=+$("ageI").value;a.by=v?yr()-v:0;saveAcc();fbPush();d.remove();drawAcct()};d.onclick=e=>{if(e.target===d)d.remove()}}
 $("acct").onclick=e=>{const b=e.target.closest("button");if(!b)return;
