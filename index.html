@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.16";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.17";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -125,6 +125,15 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .nmn button{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;background:none;color:inherit;font:500 15px var(--font);padding:11px 12px;border-radius:12px;cursor:pointer}.nmn button:hover{background:var(--soft)}.nmn button svg{width:19px;height:19px;color:var(--accent)}
 .nmn .rd2,.nmn .rd2 svg{color:#ff3b30}.nmn .rd2{border-top:1px solid var(--line);border-radius:0 0 12px 12px;margin-top:4px}
 @keyframes nf{from{opacity:0}}@keyframes np{from{opacity:0;transform:scale(.85)}}
+.nx .hlc{position:relative;overflow:hidden;margin:14px 0 18px;padding:30px 26px 22px;border-radius:26px;color:var(--i);background:radial-gradient(120% 90% at 0% 0%,rgba(255,255,255,.6),rgba(255,255,255,0) 55%),linear-gradient(145deg,var(--a),var(--b));box-shadow:0 18px 40px -14px var(--s),inset 0 0 0 1px rgba(255,255,255,.45);min-height:220px;display:flex;flex-direction:column}
+.nx .hlc:before,.nx .hlc:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.22);pointer-events:none}
+.nx .hlc:before{width:220px;height:220px;right:-70px;bottom:-90px}.nx .hlc:after{width:120px;height:120px;right:50px;bottom:-70px;background:rgba(255,255,255,.16)}
+.nx .hlc .q{position:absolute;top:-8px;left:16px;font:700 120px/1 Georgia,serif;color:var(--k);opacity:.22}
+.nx .hlc .v{position:relative;margin:14px 0 22px;font:500 19px/1.55 Georgia,"Times New Roman",serif;text-wrap:pretty}
+.nx .hlc .ft{position:relative;margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.nx .hlc .ft b{font-size:15px}.nx .hlc .ft small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--k);font-weight:700}
+.nx .hlc .dd{position:relative;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,.1);font-size:12px;opacity:.7}
+.nx .hlo{display:block;width:100%;margin:0 0 20px;padding:13px;border-radius:14px;font-weight:600;background:var(--ink);color:var(--win)}
 .nx .dl{display:none!important}.nx .it h5 i{font-style:normal;color:var(--accent);margin-right:4px}.nx .rt img{max-width:100%;height:auto;border-radius:12px;display:block;margin:8px 0}
 .nx .bl{color:#d9a400;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .nx .ed .ro{margin:10px 28px 0;padding:10px 14px;border-radius:12px;background:var(--soft);font-size:12.5px;color:var(--muted)}
@@ -227,8 +236,33 @@ function goHome(){const X=q("app").querySelector(".nx");q("vAcc").hidden=true;if
 window.toast=toast;
 /* Notes de la Bible : fusionne toutes les clés lsg.notes / lsg.notes.<compte> de cet appareil (compte actuel en priorité) */
 /* Notes de la Bible du compte Google (Firestore users/<uid>/bible/data), utiles quand le stockage local est séparé (iPhone écran d'accueil) */
-let CBN={},CBD={},CBT=0,cbOff=null;try{const c=localStorage.getItem("lc.current")||"";if(c.startsWith("f:")){CBN=JSON.parse(localStorage.getItem("lcn.cbn."+c)||"{}");CBD=JSON.parse(localStorage.getItem("lcn.cbd."+c)||"{}")}}catch(e){}
-function cbWatch(uid){if(cbOff){cbOff();cbOff=null}if(!uid||!FD){CBN={};CBD={};return}try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot({includeMetadataChanges:false},s=>{const d=s.data()||{},n=d.notes||{},dd=d.ndates||{},j=JSON.stringify(n),jd=JSON.stringify(dd);if(j===JSON.stringify(CBN)&&jd===JSON.stringify(CBD))return;CBN=n;CBD=dd;try{localStorage.setItem("lcn.cbn.f:"+uid,j);localStorage.setItem("lcn.cbd.f:"+uid,jd)}catch(e){}reload()},()=>{})}catch(e){}}
+let CBN={},CBD={},CBH={},CBT=0,cbOff=null;try{const c=localStorage.getItem("lc.current")||"";if(c.startsWith("f:")){CBN=JSON.parse(localStorage.getItem("lcn.cbn."+c)||"{}");CBD=JSON.parse(localStorage.getItem("lcn.cbd."+c)||"{}");CBH=JSON.parse(localStorage.getItem("lcn.cbh."+c)||"{}")}}catch(e){}
+function cbWatch(uid){if(cbOff){cbOff();cbOff=null}if(!uid||!FD){CBN={};CBD={};CBH={};return}try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot({includeMetadataChanges:false},s=>{const d=s.data()||{},n=d.notes||{},dd=d.ndates||{},hh=d.hl||{},j=JSON.stringify(n),jd=JSON.stringify(dd),jh=JSON.stringify(hh);if(j===JSON.stringify(CBN)&&jd===JSON.stringify(CBD)&&jh===JSON.stringify(CBH))return;CBN=n;CBD=dd;CBH=hh;try{localStorage.setItem("lcn.cbn.f:"+uid,j);localStorage.setItem("lcn.cbd.f:"+uid,jd);localStorage.setItem("lcn.cbh.f:"+uid,jh)}catch(e){}reload()},()=>{})}catch(e){}}
+/* Surbrillances de la Bible (lsg.hl, clés "JHN/14/12" → y g b p o ou #rrggbb) : lecture seule, présentées en cartes colorées. Texte des versets lu dans la Bible puis gardé en cache (lcn.vt). Date = première fois vue ici (lcn.hld). */
+const HLC={y:[250,204,21],g:[74,222,128],b:[96,165,250],p:[244,114,182],o:[251,146,60]};
+let VT={},HD={},BKN={},TXT=null,vtBusy=null;try{VT=JSON.parse(localStorage.getItem("lcn.vt")||"{}");HD=JSON.parse(localStorage.getItem("lcn.hld")||"{}");BKN=JSON.parse(localStorage.getItem("lcn.bkn")||"{}")}catch(e){}
+function hlPal(c){let r=HLC[c];if(!r&&/^#[0-9a-f]{6}$/i.test(c||""))r=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));if(!r)r=HLC.y;
+ const[R,G,B]=r.map(x=>x/255),M=Math.max(R,G,B),m=Math.min(R,G,B),d=M-m;let h=0;if(d){h=M===R?((G-B)/d)%6:M===G?(B-R)/d+2:(R-G)/d+4;h=Math.round(h*60);if(h<0)h+=360}
+ const L=(M+m)/2,sa=d?d/(1-Math.abs(2*L-1)):0,S=d?Math.round(Math.min(85,Math.max(40,sa*100))):8;
+ return{a:`hsl(${h},${S}%,90%)`,b:`hsl(${(h+10)%360},${S}%,76%)`,i:`hsl(${h},${Math.min(S,55)}%,15%)`,k:`hsl(${h},${S}%,34%)`,s:`hsla(${h},${S}%,40%,.55)`}}
+function vtFill(keys){if(vtBusy)return vtBusy;vtBusy=(async()=>{try{if(!TXT){const s=await(await fetch(BIB+"index.html")).text(),i=s.indexOf("const TEXT="),j=s.indexOf("\n",i);TXT=JSON.parse(s.slice(i+11,j).trim().replace(/;$/,""));
+  const b=s.indexOf("const BIBLE=");for(const m of s.slice(b,b+4000).matchAll(/\["([A-Z0-9]{3})","([^"]+)",\d+\]/g))BKN[m[1]]=m[2];localStorage.setItem("lcn.bkn",JSON.stringify(BKN))}
+ for(const k of keys){if(VT[k])continue;const[c,h,v]=k.split("/"),ch=TXT[c]&&TXT[c][h-1];let n=0,t="(verset introuvable)";if(ch)for(const e of ch)if(typeof e==="string"&&++n==v){t=e;break}VT[k]=t}
+ localStorage.setItem("lcn.vt",JSON.stringify(VT));TXT=null;return true}catch(e){TXT=null;return false}finally{vtBusy=null}})();return vtBusy}
+function hlItems(done){let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}const H={},ks=[];
+ try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.hl(\.|$)/.test(k))ks.push(k)}}catch(e){}
+ ks.sort((a,b)=>(b==="lsg.hl."+c)-(a==="lsg.hl."+c));
+ for(const r in CBH)if(CBH[r])H[r]=CBH[r];
+ ks.forEach(k=>{try{const o=JSON.parse(localStorage.getItem(k)||"{}");for(const r in o)if(o[r]&&!(r in H))H[r]=o[r]}catch(e){}});
+ const now=Date.now();let ch=false;for(const r in H)if(!HD[r]){HD[r]=now;ch=true}if(ch)try{localStorage.setItem("lcn.hld",JSON.stringify(HD))}catch(e){}
+ const bo=Object.keys(BKN),oi=b=>{const i=bo.indexOf(b);return i<0?999:i};
+ const L=Object.keys(H).map(k=>{const[b,c2,v]=k.split("/");return{k,b,c:+c2,v:+v,col:H[k]}}).sort((x,y)=>oi(x.b)-oi(y.b)||x.b.localeCompare(y.b)||x.c-y.c||x.v-y.v);
+ const G=[];for(const e of L){const g=G[G.length-1];if(g&&g.b===e.b&&g.c===e.c&&g.col===e.col&&g.v2===e.v-1){g.v2=e.v;g.ks.push(e.k)}else G.push({b:e.b,c:e.c,v1:e.v,v2:e.v,col:e.col,ks:[e.k]})}
+ const miss=[],out=G.map(g=>{const t=g.ks.map(k=>VT[k]);if(!t.every(Boolean))g.ks.forEach(k=>{if(!VT[k])miss.push(k)});
+  const v=t.every(Boolean)?t.join(" "):"Chargement du verset…",rf=(BKN[g.b]||g.b)+" "+g.c+":"+g.v1+(g.v2>g.v1?"-"+g.v2:""),cd=Math.min(...g.ks.map(k=>HD[k]));
+  return{id:"h:"+g.ks[0],key:g.ks[0],hl:1,ro:1,col:g.col,ref:rf,v,t:"« "+v+" »\n— "+rf,c:cd,m:cd}}).sort((a,b)=>b.c-a.c);
+ if(miss.length&&done&&!vtBusy)vtFill(miss).then(ok=>{if(ok)done()});
+ return out}
 function bibleNotes(){const out={};for(const r in CBN){const v=CBN[r],t=typeof v==="string"?v:(v&&(v.t||v.text))||"";if(t)out[r]={t,k:"fb",dt:CBD[r]}}let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}
  const keys=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.notes(\.|$)/.test(k))keys.push(k)}}catch(e){}
  keys.sort((a,b)=>(b==="lsg.notes."+c)-(a==="lsg.notes."+c));
@@ -261,7 +295,7 @@ function notes(el){
   m:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
   p:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 0 0 0 18c1.1 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10" cy="7" r="1.2" fill="currentColor"/><circle cx="14.5" cy="7" r="1.2" fill="currentColor"/><circle cx="17" cy="10.5" r="1.2" fill="currentColor"/></svg>'};
  S.notes=(S.notes||[]).map((n,i)=>typeof n==="string"?{id:"n"+Date.now()+i,t:n,m:Date.now()}:n);save();
- let fol="all",cur=null,qs="",BN=bibleNotes();
+ let fol="all",cur=null,qs="",BN=bibleNotes(),HLI=[];
  el.style.padding="0";const qq=i=>el.querySelector("#"+i);
  el.innerHTML='<div class="nx" data-v="l"><aside><h4>Notes</h4><div id="nF"></div></aside><section class="ls"><div class="hd"><button class="ib bk rb" data-go="f" aria-label="Dossiers">'+I.k+'</button><i class="sp"></i><button class="rb" id="nMore" aria-label="Plus">'+I.m+'</button><b id="nT"></b><button class="ib" id="nDel" title="Supprimer">'+I.d+'</button><button class="ib" id="nNew" title="Nouvelle note">'+I.n+'</button></div><div id="nL" style="overflow:auto;flex:1;padding-bottom:10px"></div></section><section class="ed"><div class="hd bk" style="border:0"><button class="ib bk rb" data-go="l" aria-label="Notes">'+I.k+'</button><i class="sp"></i><button class="rb" id="nPal" aria-label="Fermer la mise en forme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="nE" style="display:flex;flex-direction:column;flex:1;min-height:0"></div></section><nav class="nb"><label class="sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="nQ2" placeholder="Rechercher dans les notes"></label><div class="tbs" id="nTabs"><span id="nPill"></span><button data-t="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Accueil</button><button data-t="acc"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 20.5c.6-4.3 4.1-6.5 8.5-6.5s7.9 2.2 8.5 6.5H3.5z"/></svg>Compte</button><button id="nSr" aria-label="Rechercher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Rechercher</button></div><button class="rd" id="nNew2" aria-label="Nouvelle note">'+I.n+'</button><button class="rd" id="nFmt" aria-label="Mise en forme" style="font:700 19px var(--font)">Aa</button></nav></div>';
  const X=el.querySelector(".nx"),F=qq("nF"),Lw=qq("nL"),Ed=qq("nE");
@@ -272,21 +306,26 @@ function notes(el){
  S.trash=(S.trash||[]).filter(n=>Date.now()-n.d<30*864e5);
  function restore(n){S.trash=S.trash.filter(x=>x.id!==n.id);const r=Object.assign({},n);delete r.d;r.m=Date.now();S.notes.push(r);save();cur=r;fol="mine";delete Ed.dataset.id;render()}
  const left=n=>Math.max(1,30-Math.floor((Date.now()-n.d)/864e5));
- const items=()=>{if(fol==="trash"){let t=[...S.trash].sort((a,b)=>b.d-a.d);if(qs)t=t.filter(n=>(n.t||"").toLowerCase().includes(qs));return t}const mine=[...S.notes].sort((a,b)=>(b.p?1:0)-(a.p?1:0)||b.m-a.m);let a=fol==="bible"?BN:mine;if(qs)a=a.filter(n=>(n.t+" "+(n.ref||"")).toLowerCase().includes(qs));return a};
- function folders(){const f=[["all","Toutes les notes",S.notes.length,I.f],["mine","Notes",S.notes.length,I.f],["bible","Vos surveillances Bible",BN.length,I.b],["trash","Suppressions récentes",S.trash.length,I.d]];
+ const items=()=>{if(fol==="trash"){let t=[...S.trash].sort((a,b)=>b.d-a.d);if(qs)t=t.filter(n=>(n.t||"").toLowerCase().includes(qs));return t}const mine=[...S.notes].sort((a,b)=>(b.p?1:0)-(a.p?1:0)||b.m-a.m);let a=fol==="mine"?mine:fol==="bible"?BN:fol==="hl"?HLI:mine.concat(BN).sort((a,b)=>(b.p?1:0)-(a.p?1:0)||(b.m||0)-(a.m||0));if(qs)a=a.filter(n=>(n.t+" "+(n.ref||"")).toLowerCase().includes(qs));return a};
+ function folders(){const f=[["all","Toutes les notes",S.notes.length+BN.length,I.f],["mine","Notes",S.notes.length,I.f],["bible","Bible",BN.length,I.b],["hl","Vos surbrillances Bible",HLI.length,I.b],["trash","Suppressions récentes",S.trash.length,I.d]];
   F.innerHTML="";f.forEach(([k,t,c,ic])=>{const b=E("button",{className:"fd"+(k===fol?" on":"")});b.innerHTML="<span>"+ic+esc(t)+"</span><small>"+c+"</small>";b.onclick=()=>{fol=k;X.dataset.v="l";render()};F.append(b)})}
- function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Vos surveillances Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
-  if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune surveillance de la Bible sur cet appareil.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
+ function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Bible",hl:"Vos surbrillances Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
+  if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune note de la Bible sur cet appareil.":fol==="hl"?"Aucune surbrillance. Surlignez un verset dans la Bible pour le retrouver ici.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
   let g="";a.forEach(n=>{const h=n.ro?"Bible":"Notes";if(fol==="all"&&h!==g){g=h;Lw.append(E("div",{className:"gl",textContent:h}))}
-   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=n.ro?((n.c||n.m)?new Date(n.c||n.m):null):new Date(n.m),bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
+   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">Surbrillance</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
+ function hlDone(){if(!Ed.isConnected)return;delete Ed.dataset.id;render()}
+ function hlCard(){const p=hlPal(cur.col),c=cur,f=t=>new Date(t).toLocaleDateString("fr-FR",{dateStyle:"long"});
+  Ed.innerHTML='<div class="dt">Surbrillance de la Bible</div><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">Surlignée le '+f(c.c)+'</div></div><button class="hlo" id="nHo">Ouvrir dans la Bible</button>';
+  qq("nHo").onclick=()=>open("bible","#"+c.key)}
  function editor(){qq("nDel").style.visibility=cur&&!cur.ro?"visible":"hidden";
   if(!cur){Ed.innerHTML='<div class="em">Aucune note sélectionnée</div>';return}
   if(Ed.dataset.id===cur.id)return;Ed.dataset.id=cur.id;
   if(cur.d){Ed.innerHTML='<div class="dt">Supprimée le '+new Date(cur.d).toLocaleDateString("fr-FR",{dateStyle:"long"})+' · encore '+left(cur)+' j</div><div class="ro" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span style="flex:1;min-width:160px">Note dans Suppressions récentes. Récupérez-la pour la modifier.</span><button class="rb" style="width:auto;padding:0 16px;height:38px;border-radius:19px;color:var(--accent);font-weight:600" id="nRs">Récupérer</button><button class="rb" style="width:auto;padding:0 16px;height:38px;border-radius:19px;color:#e5484d;font-weight:600" id="nPg">Supprimer</button></div><div class="vw" id="nV"></div>';
    const V=qq("nV");if(cur.h)V.innerHTML=cur.h;else V.innerHTML=linkRefs(cur.t);V.style.whiteSpace=cur.h?"normal":"";const c=cur;qq("nRs").onclick=()=>restore(c);qq("nPg").onclick=()=>del(c);return}
   if(!cur.ro){richEd();return}
+  if(cur.hl){hlCard();return}
   const rw=cur.ro&&S.editBible;
-  Ed.innerHTML='<div class="dt">'+(cur.ro?(()=>{const f=t=>new Date(t).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}),c=cur.c||cur.m;return "Surveillance Bible"+(c?" · créée le "+f(c):"")+(cur.m&&c&&Math.abs(cur.m-c)>6e4?" · modifiée le "+f(cur.m):"")})():new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}))+'</div>'+(cur.ro?'<h2>'+esc(cur.ref)+'</h2>'+(rw?"":'<div class="ro">Lecture seule. Pour modifier, activez « Modifier les notes de la Bible » dans Réglages › Notes.</div>'):"")+'<div class="vw" id="nV"></div><textarea id="nTx" placeholder="Écrivez…" style="display:none"></textarea>';
+  Ed.innerHTML='<div class="dt">'+(cur.ro?"Note de la Bible"+(cur.m?" · "+new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}):""):new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}))+'</div>'+(cur.ro?'<h2>'+esc(cur.ref)+'</h2>'+(rw?"":'<div class="ro">Lecture seule. Pour modifier, activez « Modifier les notes de la Bible » dans Réglages › Notes.</div>'):"")+'<div class="vw" id="nV"></div><textarea id="nTx" placeholder="Écrivez…" style="display:none"></textarea>';
   const T=qq("nTx"),V=qq("nV"),ro=cur.ro&&!rw;T.value=cur.t;T.readOnly=ro;
   const show=()=>{V.innerHTML=linkRefs(T.value);V.style.display="";T.style.display="none"};show();
   V.onclick=e=>{const a=e.target.closest(".bl");if(a){open("bible",a.dataset.h);return}if(ro)return;V.style.display="none";T.style.display="";T.focus()};
@@ -361,7 +400,7 @@ function notes(el){
   d.onpointermove=e=>{if(x0==null)return;if(Math.abs(e.clientX-x0)>8||Math.abs(e.clientY-y0)>8)clearTimeout(lp)};
   d.onpointerup=d.onpointercancel=()=>{clearTimeout(lp);x0=null}}
  const empty=n=>!n.ro&&!(n.t||"").trim()&&!/<(img|table|hr)/i.test(n.h||"");
- function render(){const ke=X.dataset.v==="e"&&cur;const bad=S.notes.filter(n=>empty(n)&&!(ke&&n===cur));if(bad.length){S.notes=S.notes.filter(n=>!bad.includes(n));save();if(cur&&bad.includes(cur)){cur=null;delete Ed.dataset.id}}if(!(cur&&cur.ro&&S.editBible))BN=bibleNotes();folders();list();editor();requestAnimationFrame(pill)}
+ function render(){const ke=X.dataset.v==="e"&&cur;const bad=S.notes.filter(n=>empty(n)&&!(ke&&n===cur));if(bad.length){S.notes=S.notes.filter(n=>!bad.includes(n));save();if(cur&&bad.includes(cur)){cur=null;delete Ed.dataset.id}}if(!(cur&&cur.ro&&S.editBible))BN=bibleNotes();HLI=hlItems(hlDone);if(cur&&cur.hl)cur=HLI.find(x=>x.id===cur.id)||cur;folders();list();editor();requestAnimationFrame(pill)}
  const pill=()=>{const P=qq("nPill"),b=qq("nTabs").querySelector("button.sel")||qq("nTabs").querySelector("button");P.style.width=b.offsetWidth+"px";P.style.transform="translateX("+b.offsetLeft+"px)";qq("nTabs").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
   const ok=cur&&!cur.ro&&!cur.d&&!(innerWidth<=760&&X.dataset.v!=="e");qq("nFmt").style.display=ok?"":"none";if(!ok){X.classList.remove("fmt");qq("nFmt").classList.remove("on");qq("nPal").classList.remove("on")}};
  qq("nTabs").querySelector("[data-t=home]").onclick=goHome;
