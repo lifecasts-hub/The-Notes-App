@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.15";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.16";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -278,7 +278,7 @@ function notes(el){
  function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Vos surveillances Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
   if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune surveillance de la Bible sur cet appareil.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
   let g="";a.forEach(n=>{const h=n.ro?"Bible":"Notes";if(fol==="all"&&h!==g){g=h;Lw.append(E("div",{className:"gl",textContent:h}))}
-   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
+   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=n.ro?((n.c||n.m)?new Date(n.c||n.m):null):new Date(n.m),bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
  function editor(){qq("nDel").style.visibility=cur&&!cur.ro?"visible":"hidden";
   if(!cur){Ed.innerHTML='<div class="em">Aucune note sélectionnée</div>';return}
   if(Ed.dataset.id===cur.id)return;Ed.dataset.id=cur.id;
@@ -286,7 +286,7 @@ function notes(el){
    const V=qq("nV");if(cur.h)V.innerHTML=cur.h;else V.innerHTML=linkRefs(cur.t);V.style.whiteSpace=cur.h?"normal":"";const c=cur;qq("nRs").onclick=()=>restore(c);qq("nPg").onclick=()=>del(c);return}
   if(!cur.ro){richEd();return}
   const rw=cur.ro&&S.editBible;
-  Ed.innerHTML='<div class="dt">'+(cur.ro?"Note de la Bible"+(cur.m?" · "+new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}):""):new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}))+'</div>'+(cur.ro?'<h2>'+esc(cur.ref)+'</h2>'+(rw?"":'<div class="ro">Lecture seule. Pour modifier, activez « Modifier les notes de la Bible » dans Réglages › Notes.</div>'):"")+'<div class="vw" id="nV"></div><textarea id="nTx" placeholder="Écrivez…" style="display:none"></textarea>';
+  Ed.innerHTML='<div class="dt">'+(cur.ro?(()=>{const f=t=>new Date(t).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}),c=cur.c||cur.m;return "Surveillance Bible"+(c?" · créée le "+f(c):"")+(cur.m&&c&&Math.abs(cur.m-c)>6e4?" · modifiée le "+f(cur.m):"")})():new Date(cur.m).toLocaleString("fr-FR",{dateStyle:"long",timeStyle:"short"}))+'</div>'+(cur.ro?'<h2>'+esc(cur.ref)+'</h2>'+(rw?"":'<div class="ro">Lecture seule. Pour modifier, activez « Modifier les notes de la Bible » dans Réglages › Notes.</div>'):"")+'<div class="vw" id="nV"></div><textarea id="nTx" placeholder="Écrivez…" style="display:none"></textarea>';
   const T=qq("nTx"),V=qq("nV"),ro=cur.ro&&!rw;T.value=cur.t;T.readOnly=ro;
   const show=()=>{V.innerHTML=linkRefs(T.value);V.style.display="";T.style.display="none"};show();
   V.onclick=e=>{const a=e.target.closest(".bl");if(a){open("bible",a.dataset.h);return}if(ro)return;V.style.display="none";T.style.display="";T.focus()};
