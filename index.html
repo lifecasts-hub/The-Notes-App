@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.18";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.19";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -50,7 +50,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .nx .it.on{background:var(--ink);color:var(--win)}.nx .it.on .dc,.nx .it.on .dc b,.nx .it.on p{color:var(--win);opacity:.85}
 .nx .it h5{margin:0 0 3px;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nx .it p{margin:0;color:var(--muted);font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.nx .it .tg{flex:none;font-size:10px;font-weight:700;padding:3px 7px;border-radius:99px;background:var(--accent);color:#fff}
+.nx .it .tg{flex:none;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;font-weight:700;padding:3px 7px;border-radius:99px;background:var(--accent);color:#fff}
 .nx .gl{padding:12px 22px 6px;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .nx .ed{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--win);color:var(--ink)}
 .nx .ed .dt{margin:14px 28px 0;color:var(--muted);font-size:12px}
@@ -315,7 +315,7 @@ function notes(el){
  function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Bible",hl:"Surbrillances et J'aime Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
   if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune note de la Bible sur cet appareil.":fol==="hl"?"Aucune surbrillance ni J'aime. Surlignez ou aimez un verset dans la Bible pour le retrouver ici.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
   let g="";a.forEach(n=>{const h=n.ro?"Bible":"Notes";if(fol==="all"&&h!==g){g=h;Lw.append(E("div",{className:"gl",textContent:h}))}
-   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">'+(n.col==="l"?"J\'aime":n.lk?"Surbrillance · J\'aime":"Surbrillance")+'</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
+   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">'+(n.col==="l"?"J\'aime":"Surbrillance")+(n.lk||n.col==="l"?'<svg viewBox="0 0 24 24" style="width:10px;height:10px;margin-left:4px;vertical-align:-1px;fill:#fff"><path d="M12 20.5s-7.500-4.600-9.200-9.600C1.700 7.700 3.600 4.500 7 4.500c2 0 3.700 1.100 5 3 1.300-1.900 3-3 5-3 3.400 0 5.300 3.200 4.200 6.400-1.700 5-9.200 9.600-9.200 9.600z"/></svg>':"")+'</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
  function hlDone(){if(!Ed.isConnected)return;delete Ed.dataset.id;render()}
  function hlCard(){const p=hlPal(cur.col),c=cur,f=t=>new Date(t).toLocaleDateString("fr-FR",{dateStyle:"long"});
   Ed.innerHTML='<div class="dt">'+(c.col==="l"?"Passage aimé":"Surbrillance de la Bible")+(c.lk&&c.col!=="l"?" · J\'aime":"")+'</div><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">'+(c.col==="l"?"Aimé":"Surlignée")+' le '+f(c.c)+'</div></div><button class="hlo" id="nHo">Ouvrir dans la Bible</button>';
