@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.19";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.20";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -125,7 +125,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .nmn button{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;background:none;color:inherit;font:500 15px var(--font);padding:11px 12px;border-radius:12px;cursor:pointer}.nmn button:hover{background:var(--soft)}.nmn button svg{width:19px;height:19px;color:var(--accent)}
 .nmn .rd2,.nmn .rd2 svg{color:#ff3b30}.nmn .rd2{border-top:1px solid var(--line);border-radius:0 0 12px 12px;margin-top:4px}
 @keyframes nf{from{opacity:0}}@keyframes np{from{opacity:0;transform:scale(.85)}}
-.nx .hlc{position:relative;overflow:hidden;margin:14px 0 18px;padding:30px 26px 22px;border-radius:26px;color:var(--i);background:radial-gradient(120% 90% at 0% 0%,rgba(255,255,255,.6),rgba(255,255,255,0) 55%),linear-gradient(145deg,var(--a),var(--b));box-shadow:0 18px 40px -14px var(--s),inset 0 0 0 1px rgba(255,255,255,.45);min-height:220px;display:flex;flex-direction:column}
+.nx .hlc{position:relative;overflow:hidden;margin:13px 0 21px;padding:34px 28px 21px;border-radius:26px;color:var(--i);background:radial-gradient(120% 90% at 0% 0%,rgba(255,255,255,.6),rgba(255,255,255,0) 55%),linear-gradient(145deg,var(--a),var(--b));box-shadow:0 18px 40px -14px var(--s),inset 0 0 0 1px rgba(255,255,255,.45);min-height:233px;display:flex;flex-direction:column}
 .nx .hlc:before,.nx .hlc:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.22);pointer-events:none}
 .nx .hlc:before{width:220px;height:220px;right:-70px;bottom:-90px}.nx .hlc:after{width:120px;height:120px;right:50px;bottom:-70px;background:rgba(255,255,255,.16)}
 .nx .hlc .q{position:absolute;top:-8px;left:16px;font:700 120px/1 Georgia,serif;color:var(--k);opacity:.22}
@@ -133,7 +133,22 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .nx .hlc .ft{position:relative;margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .nx .hlc .ft b{font-size:15px}.nx .hlc .ft small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--k);font-weight:700}
 .nx .hlc .dd{position:relative;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,.1);font-size:12px;opacity:.7}
-.nx .hlo{display:block;width:100%;margin:0 0 20px;padding:13px;border-radius:14px;font-weight:600;background:var(--ink);color:var(--win)}
+.nx .hlw{flex:1;overflow:auto;padding:0 21px 34px}
+.nx .hlb{display:flex;gap:13px;margin:0 0 21px}
+.nx .hlb button{height:48px;border:0;border-radius:14px;font:600 16px/1 var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 21px}
+.nx .hlo{flex:1.618;background:var(--ink);color:var(--win)}
+.nx .hlm{flex:1;background:var(--soft);color:var(--accent)}.nx .hlm svg{width:19px;height:19px}
+.nx .md{margin:0 0 21px}.nx .md[hidden]{display:none}
+.nx .mdh{display:flex;align-items:center;justify-content:space-between;margin:0 0 13px;font:600 12px var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.nx .mdt{display:flex;gap:8px}.nx .mdt button{height:34px;padding:0 13px;border:0;border-radius:17px;background:var(--soft);color:var(--ink);font:500 13px var(--font);cursor:pointer}
+.nx .mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(144px,1fr));gap:13px;align-items:start}
+.nx .mc{position:relative;padding:13px 13px 13px;border-radius:21px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);min-height:89px;font:15px/1.5 var(--font);color:var(--ink)}
+.nx .mc .tx2{outline:none;min-height:55px;word-break:break-word}.nx .mc .tx2:empty:before{content:"Écrivez…";color:var(--muted)}
+.nx .mc img{display:block;width:100%;border-radius:13px}
+.nx .mc.sh{display:grid;place-items:center;cursor:pointer}.nx .mc.sh svg{width:55px;height:55px}
+.nx .mc .x{position:absolute;top:5px;right:5px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(0,0,0,.38);color:#fff;font:15px/24px var(--font);cursor:pointer;padding:0;opacity:0;transition:opacity .15s}.nx .mc:hover .x,.nx .mc:focus-within .x{opacity:1}
+@media (hover:none){.nx .mc .x{opacity:.8}}
+.nx .mc.pt{grid-column:1/-1;background:none;box-shadow:none;padding:5px 2px;font-size:16px;line-height:1.6}
 .nx .dl{display:none!important}.nx .it h5 i{font-style:normal;color:var(--accent);margin-right:4px}.nx .rt img{max-width:100%;height:auto;border-radius:12px;display:block;margin:8px 0}
 .nx .bl{color:#d9a400;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .nx .ed .ro{margin:10px 28px 0;padding:10px 14px;border-radius:12px;background:var(--soft);font-size:12.5px;color:var(--muted)}
@@ -317,9 +332,23 @@ function notes(el){
   let g="";a.forEach(n=>{const h=n.ro?"Bible":"Notes";if(fol==="all"&&h!==g){g=h;Lw.append(E("div",{className:"gl",textContent:h}))}
    const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">'+(n.col==="l"?"J\'aime":"Surbrillance")+(n.lk||n.col==="l"?'<svg viewBox="0 0 24 24" style="width:10px;height:10px;margin-left:4px;vertical-align:-1px;fill:#fff"><path d="M12 20.5s-7.500-4.600-9.200-9.600C1.700 7.700 3.600 4.500 7 4.500c2 0 3.700 1.100 5 3 1.300-1.900 3-3 5-3 3.400 0 5.300 3.200 4.200 6.400-1.700 5-9.200 9.600-9.200 9.600z"/></svg>':"")+'</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
  function hlDone(){if(!Ed.isConnected)return;delete Ed.dataset.id;render()}
+ const MK=()=>"lcm."+(CUR||"g"),MED=()=>ls.g(MK(),{}),MS=m=>ls.s(MK(),m),SHP=["c","r","d","s"],COL=["#e0560c","#d9a400","#2f9e6e","#3b82f6","#a855f7","#e5484d"];
+ function shp(c){const f=COL[c.c%COL.length],p={c:'<circle cx="50" cy="50" r="42"/>',r:'<rect x="10" y="10" width="80" height="80" rx="18"/>',d:'<path d="M50 6 94 50 50 94 6 50z"/>',s:'<path d="M50 6l12.700 27.500 30 3.500-22.200 20.500 5.900 29.700L50 72.200 23.600 87.200l5.900-29.700L7.300 37l30-3.500z"/>'}[c.s||"c"];return '<svg viewBox="0 0 100 100" fill="'+f+'">'+p+"</svg>"}
  function hlCard(){const p=hlPal(cur.col),c=cur,f=t=>new Date(t).toLocaleDateString("fr-FR",{dateStyle:"long"});
-  Ed.innerHTML='<div class="dt">'+(c.col==="l"?"Passage aimé":"Surbrillance de la Bible")+(c.lk&&c.col!=="l"?" · J\'aime":"")+'</div><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">'+(c.col==="l"?"Aimé":"Surlignée")+' le '+f(c.c)+'</div></div><button class="hlo" id="nHo">Ouvrir dans la Bible</button>';
-  qq("nHo").onclick=()=>open("bible","#"+c.key)}
+  Ed.innerHTML='<div class="dt">'+(c.col==="l"?"Passage aimé":"Surbrillance de la Bible")+(c.lk&&c.col!=="l"?" · J\'aime":"")+'</div><div class="hlw"><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">'+(c.col==="l"?"Aimé":"Surlignée")+' le '+f(c.c)+'</div></div><div class="hlb"><button class="hlo" id="nHo">Ouvrir dans la Bible</button><button class="hlm" id="nHm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M5.600 5.600l2.100 2.100M18.400 5.600l-2.100 2.100M3 14h18M6 18h12"/></svg>Méditer</button></div><div class="md" id="nMd" hidden><div class="mdh"><span>Méditation</span><div class="mdt"><button data-a="t">Texte</button><button data-a="i">Image</button><button data-a="s">Forme</button></div></div><div class="mg" id="nMg"></div><input type="file" accept="image/*" id="nMf" hidden></div></div>';
+  qq("nHo").onclick=()=>open("bible","#"+c.key);
+  const Md=qq("nMd"),Mg=qq("nMg"),id=c.id;let M=MED(),L=M[id]||[];Md.hidden=!L.length;
+  const put=()=>{M=MED();if(L.length)M[id]=L;else delete M[id];MS(M)};
+  const draw=()=>{Mg.innerHTML="";L.forEach((m,i)=>{const d=document.createElement("div");d.className="mc"+(m.k==="s"?" sh":"");
+   if(m.k==="t"){d.innerHTML='<div class="tx2" contenteditable="true"></div>';const t=d.firstChild;t.textContent=m.t||"";const fl=()=>d.classList.toggle("pt",(t.textContent||"").length>120);fl();t.oninput=()=>{m.t=t.textContent;fl();put()}}
+   else if(m.k==="i"){d.innerHTML='<img alt="">';d.firstChild.src=m.u}
+   else{d.innerHTML=shp(m);d.onclick=e=>{if(e.target.closest(".x"))return;if(e.detail>1||e.shiftKey)m.s=SHP[(SHP.indexOf(m.s||"c")+1)%4];else m.c=(m.c+1)%COL.length;put();draw()}}
+   const x=document.createElement("button");x.className="x";x.textContent="×";x.setAttribute("aria-label","Supprimer");x.onclick=e=>{e.stopPropagation();L.splice(i,1);put();draw()};d.append(x);Mg.append(d)})};
+  const add=m=>{L.push(m);Md.hidden=false;put();draw()};
+  qq("nHm").onclick=()=>{Md.hidden=!Md.hidden;if(!Md.hidden&&!L.length)add({k:"t",t:""})};
+  Md.querySelectorAll(".mdt button").forEach(b=>b.onclick=()=>{const a=b.dataset.a;if(a==="t")add({k:"t",t:""});else if(a==="s")add({k:"s",s:"c",c:0});else qq("nMf").click()});
+  qq("nMf").onchange=e=>{const fl=e.target.files[0];e.target.value="";if(!fl)return;const im=new Image(),u=URL.createObjectURL(fl);im.onload=()=>{const r=Math.min(1,640/Math.max(im.width,im.height)),cv=document.createElement("canvas");cv.width=Math.round(im.width*r);cv.height=Math.round(im.height*r);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);add({k:"i",u:cv.toDataURL("image/jpeg",.8)})};im.src=u};
+  draw()}
  function editor(){qq("nDel").style.visibility=cur&&!cur.ro?"visible":"hidden";
   if(!cur){Ed.innerHTML='<div class="em">Aucune note sélectionnée</div>';return}
   if(Ed.dataset.id===cur.id)return;Ed.dataset.id=cur.id;
