@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Notes LifeCasts</title>
-<script>/*LC-OTA*/(function(){var B="2.17";window.LC_BUILT=B;
+<script>/*LC-OTA*/(function(){var B="2.18";window.LC_BUILT=B;
 function c(a,b){a=String(a).split(".");b=String(b).split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var d=(+a[i]||0)-(+b[i]||0);if(d)return d>0?1:-1}return 0}window.LC_CMP=c;
 if(window.LC_OTA_VER){window.LC_VER=window.LC_OTA_VER;return}window.LC_VER=B;
 if(location.protocol!=="file:")return;
@@ -236,10 +236,10 @@ function goHome(){const X=q("app").querySelector(".nx");q("vAcc").hidden=true;if
 window.toast=toast;
 /* Notes de la Bible : fusionne toutes les clés lsg.notes / lsg.notes.<compte> de cet appareil (compte actuel en priorité) */
 /* Notes de la Bible du compte Google (Firestore users/<uid>/bible/data), utiles quand le stockage local est séparé (iPhone écran d'accueil) */
-let CBN={},CBD={},CBH={},CBT=0,cbOff=null;try{const c=localStorage.getItem("lc.current")||"";if(c.startsWith("f:")){CBN=JSON.parse(localStorage.getItem("lcn.cbn."+c)||"{}");CBD=JSON.parse(localStorage.getItem("lcn.cbd."+c)||"{}");CBH=JSON.parse(localStorage.getItem("lcn.cbh."+c)||"{}")}}catch(e){}
-function cbWatch(uid){if(cbOff){cbOff();cbOff=null}if(!uid||!FD){CBN={};CBD={};CBH={};return}try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot({includeMetadataChanges:false},s=>{const d=s.data()||{},n=d.notes||{},dd=d.ndates||{},hh=d.hl||{},j=JSON.stringify(n),jd=JSON.stringify(dd),jh=JSON.stringify(hh);if(j===JSON.stringify(CBN)&&jd===JSON.stringify(CBD)&&jh===JSON.stringify(CBH))return;CBN=n;CBD=dd;CBH=hh;try{localStorage.setItem("lcn.cbn.f:"+uid,j);localStorage.setItem("lcn.cbd.f:"+uid,jd);localStorage.setItem("lcn.cbh.f:"+uid,jh)}catch(e){}reload()},()=>{})}catch(e){}}
+let CBN={},CBD={},CBH={},CBL={},CBT=0,cbOff=null;try{const c=localStorage.getItem("lc.current")||"";if(c.startsWith("f:")){CBN=JSON.parse(localStorage.getItem("lcn.cbn."+c)||"{}");CBD=JSON.parse(localStorage.getItem("lcn.cbd."+c)||"{}");CBH=JSON.parse(localStorage.getItem("lcn.cbh."+c)||"{}");CBL=JSON.parse(localStorage.getItem("lcn.cbl."+c)||"{}")}}catch(e){}
+function cbWatch(uid){if(cbOff){cbOff();cbOff=null}if(!uid||!FD){CBN={};CBD={};CBH={};CBL={};return}try{cbOff=FD.doc("users/"+uid).collection("bible").doc("data").onSnapshot({includeMetadataChanges:false},s=>{const d=s.data()||{},n=d.notes||{},dd=d.ndates||{},hh=d.hl||{},ll=d.likes||{},jl=JSON.stringify(ll),j=JSON.stringify(n),jd=JSON.stringify(dd),jh=JSON.stringify(hh);if(j===JSON.stringify(CBN)&&jd===JSON.stringify(CBD)&&jh===JSON.stringify(CBH)&&jl===JSON.stringify(CBL))return;CBN=n;CBD=dd;CBH=hh;CBL=ll;try{localStorage.setItem("lcn.cbn.f:"+uid,j);localStorage.setItem("lcn.cbd.f:"+uid,jd);localStorage.setItem("lcn.cbh.f:"+uid,jh);localStorage.setItem("lcn.cbl.f:"+uid,jl)}catch(e){}reload()},()=>{})}catch(e){}}
 /* Surbrillances de la Bible (lsg.hl, clés "JHN/14/12" → y g b p o ou #rrggbb) : lecture seule, présentées en cartes colorées. Texte des versets lu dans la Bible puis gardé en cache (lcn.vt). Date = première fois vue ici (lcn.hld). */
-const HLC={y:[250,204,21],g:[74,222,128],b:[96,165,250],p:[244,114,182],o:[251,146,60]};
+const HLC={l:[244,63,94],y:[250,204,21],g:[74,222,128],b:[96,165,250],p:[244,114,182],o:[251,146,60]};
 let VT={},HD={},BKN={},TXT=null,vtBusy=null;try{VT=JSON.parse(localStorage.getItem("lcn.vt")||"{}");HD=JSON.parse(localStorage.getItem("lcn.hld")||"{}");BKN=JSON.parse(localStorage.getItem("lcn.bkn")||"{}")}catch(e){}
 function hlPal(c){let r=HLC[c];if(!r&&/^#[0-9a-f]{6}$/i.test(c||""))r=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));if(!r)r=HLC.y;
  const[R,G,B]=r.map(x=>x/255),M=Math.max(R,G,B),m=Math.min(R,G,B),d=M-m;let h=0;if(d){h=M===R?((G-B)/d)%6:M===G?(B-R)/d+2:(R-G)/d+4;h=Math.round(h*60);if(h<0)h+=360}
@@ -249,18 +249,21 @@ function vtFill(keys){if(vtBusy)return vtBusy;vtBusy=(async()=>{try{if(!TXT){con
   const b=s.indexOf("const BIBLE=");for(const m of s.slice(b,b+4000).matchAll(/\["([A-Z0-9]{3})","([^"]+)",\d+\]/g))BKN[m[1]]=m[2];localStorage.setItem("lcn.bkn",JSON.stringify(BKN))}
  for(const k of keys){if(VT[k])continue;const[c,h,v]=k.split("/"),ch=TXT[c]&&TXT[c][h-1];let n=0,t="(verset introuvable)";if(ch)for(const e of ch)if(typeof e==="string"&&++n==v){t=e;break}VT[k]=t}
  localStorage.setItem("lcn.vt",JSON.stringify(VT));TXT=null;return true}catch(e){TXT=null;return false}finally{vtBusy=null}})();return vtBusy}
-function hlItems(done){let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}const H={},ks=[];
- try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.hl(\.|$)/.test(k))ks.push(k)}}catch(e){}
+function hlItems(done){let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}const H={},ks=[],LKS={},kl=[];
+ try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^lsg\.hl(\.|$)/.test(k))ks.push(k);else if(/^lsg\.likes(\.|$)/.test(k))kl.push(k)}}catch(e){}
  ks.sort((a,b)=>(b==="lsg.hl."+c)-(a==="lsg.hl."+c));
  for(const r in CBH)if(CBH[r])H[r]=CBH[r];
  ks.forEach(k=>{try{const o=JSON.parse(localStorage.getItem(k)||"{}");for(const r in o)if(o[r]&&!(r in H))H[r]=o[r]}catch(e){}});
+ for(const r in CBL)if(CBL[r])LKS[r]=1;
+ kl.forEach(k=>{try{const o=JSON.parse(localStorage.getItem(k)||"{}");for(const r in o)if(o[r])LKS[r]=1}catch(e){}});
+ for(const r in LKS)if(!(r in H))H[r]="l";
  const now=Date.now();let ch=false;for(const r in H)if(!HD[r]){HD[r]=now;ch=true}if(ch)try{localStorage.setItem("lcn.hld",JSON.stringify(HD))}catch(e){}
  const bo=Object.keys(BKN),oi=b=>{const i=bo.indexOf(b);return i<0?999:i};
- const L=Object.keys(H).map(k=>{const[b,c2,v]=k.split("/");return{k,b,c:+c2,v:+v,col:H[k]}}).sort((x,y)=>oi(x.b)-oi(y.b)||x.b.localeCompare(y.b)||x.c-y.c||x.v-y.v);
- const G=[];for(const e of L){const g=G[G.length-1];if(g&&g.b===e.b&&g.c===e.c&&g.col===e.col&&g.v2===e.v-1){g.v2=e.v;g.ks.push(e.k)}else G.push({b:e.b,c:e.c,v1:e.v,v2:e.v,col:e.col,ks:[e.k]})}
+ const L=Object.keys(H).map(k=>{const[b,c2,v]=k.split("/");return{k,b,c:+c2,v:+v,col:H[k],lk:!!LKS[k]}}).sort((x,y)=>oi(x.b)-oi(y.b)||x.b.localeCompare(y.b)||x.c-y.c||x.v-y.v);
+ const G=[];for(const e of L){const g=G[G.length-1];if(g&&g.b===e.b&&g.c===e.c&&g.col===e.col&&g.lk===e.lk&&g.v2===e.v-1){g.v2=e.v;g.ks.push(e.k)}else G.push({b:e.b,c:e.c,v1:e.v,v2:e.v,col:e.col,lk:e.lk,ks:[e.k]})}
  const miss=[],out=G.map(g=>{const t=g.ks.map(k=>VT[k]);if(!t.every(Boolean))g.ks.forEach(k=>{if(!VT[k])miss.push(k)});
   const v=t.every(Boolean)?t.join(" "):"Chargement du verset…",rf=(BKN[g.b]||g.b)+" "+g.c+":"+g.v1+(g.v2>g.v1?"-"+g.v2:""),cd=Math.min(...g.ks.map(k=>HD[k]));
-  return{id:"h:"+g.ks[0],key:g.ks[0],hl:1,ro:1,col:g.col,ref:rf,v,t:"« "+v+" »\n— "+rf,c:cd,m:cd}}).sort((a,b)=>b.c-a.c);
+  return{id:"h:"+g.ks[0],key:g.ks[0],hl:1,ro:1,col:g.col,lk:g.lk,ref:rf,v,t:"« "+v+" »\n— "+rf,c:cd,m:cd}}).sort((a,b)=>b.c-a.c);
  if(miss.length&&done&&!vtBusy)vtFill(miss).then(ok=>{if(ok)done()});
  return out}
 function bibleNotes(){const out={};for(const r in CBN){const v=CBN[r],t=typeof v==="string"?v:(v&&(v.t||v.text))||"";if(t)out[r]={t,k:"fb",dt:CBD[r]}}let c="";try{c=localStorage.getItem("lc.current")||""}catch(e){}
@@ -307,15 +310,15 @@ function notes(el){
  function restore(n){S.trash=S.trash.filter(x=>x.id!==n.id);const r=Object.assign({},n);delete r.d;r.m=Date.now();S.notes.push(r);save();cur=r;fol="mine";delete Ed.dataset.id;render()}
  const left=n=>Math.max(1,30-Math.floor((Date.now()-n.d)/864e5));
  const items=()=>{if(fol==="trash"){let t=[...S.trash].sort((a,b)=>b.d-a.d);if(qs)t=t.filter(n=>(n.t||"").toLowerCase().includes(qs));return t}const mine=[...S.notes].sort((a,b)=>(b.p?1:0)-(a.p?1:0)||b.m-a.m);let a=fol==="mine"?mine:fol==="bible"?BN:fol==="hl"?HLI:mine.concat(BN).sort((a,b)=>(b.p?1:0)-(a.p?1:0)||(b.m||0)-(a.m||0));if(qs)a=a.filter(n=>(n.t+" "+(n.ref||"")).toLowerCase().includes(qs));return a};
- function folders(){const f=[["all","Toutes les notes",S.notes.length+BN.length,I.f],["mine","Notes",S.notes.length,I.f],["bible","Bible",BN.length,I.b],["hl","Vos surbrillances Bible",HLI.length,I.b],["trash","Suppressions récentes",S.trash.length,I.d]];
+ function folders(){const f=[["all","Toutes les notes",S.notes.length+BN.length,I.f],["mine","Notes",S.notes.length,I.f],["bible","Bible",BN.length,I.b],["hl","Surbrillances et J'aime Bible",HLI.length,I.b],["trash","Suppressions récentes",S.trash.length,I.d]];
   F.innerHTML="";f.forEach(([k,t,c,ic])=>{const b=E("button",{className:"fd"+(k===fol?" on":"")});b.innerHTML="<span>"+ic+esc(t)+"</span><small>"+c+"</small>";b.onclick=()=>{fol=k;X.dataset.v="l";render()};F.append(b)})}
- function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Bible",hl:"Vos surbrillances Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
-  if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune note de la Bible sur cet appareil.":fol==="hl"?"Aucune surbrillance. Surlignez un verset dans la Bible pour le retrouver ici.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
+ function list(){qq("nT").textContent={all:"Toutes les notes",mine:"Notes",bible:"Bible",hl:"Surbrillances et J'aime Bible",trash:"Suppressions récentes"}[fol];Lw.innerHTML="";const a=items();
+  if(!a.length){Lw.innerHTML='<div class="gl" style="text-align:center;padding:30px">'+(fol==="bible"?"Aucune note de la Bible sur cet appareil.":fol==="hl"?"Aucune surbrillance ni J'aime. Surlignez ou aimez un verset dans la Bible pour le retrouver ici.":fol==="trash"?"Aucune note supprimée. Les notes supprimées restent ici 30 jours.":"Aucune note")+"</div>";return}
   let g="";a.forEach(n=>{const h=n.ro?"Bible":"Notes";if(fol==="all"&&h!==g){g=h;Lw.append(E("div",{className:"gl",textContent:h}))}
-   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">Surbrillance</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
+   const d=E("div",{className:"it"+(cur&&cur.id===n.id?" on":"")});const dd=(!n.ro||n.m)?new Date(n.m):null,bk=!dd?n.key.split("/"):null;d.innerHTML='<div class="dc">'+(!dd?esc(bk[0])+"<b>"+esc(bk[1])+"</b>":dd.toLocaleDateString("fr-FR",{month:"short"}).replace(".","")+"<b>"+dd.getDate()+"</b>")+'</div><div class="tx"><h5>'+(n.p?"<i>●</i>":"")+esc(title(n))+"</h5><p>"+esc(prev(n).slice(0,140))+"</p></div>"+(n.hl?'<span class="tg" style="background:'+hlPal(n.col).k+'">'+(n.col==="l"?"J\'aime":n.lk?"Surbrillance · J\'aime":"Surbrillance")+'</span>':n.ro?'<span class="tg">Bible</span>':n.d?'<span class="tg" style="background:var(--muted)">'+left(n)+' j</span>':"");d.onclick=()=>{if(d._sw)return;cur=n;X.dataset.v="e";render()};bindIt(d,n);Lw.append(d)})}
  function hlDone(){if(!Ed.isConnected)return;delete Ed.dataset.id;render()}
  function hlCard(){const p=hlPal(cur.col),c=cur,f=t=>new Date(t).toLocaleDateString("fr-FR",{dateStyle:"long"});
-  Ed.innerHTML='<div class="dt">Surbrillance de la Bible</div><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">Surlignée le '+f(c.c)+'</div></div><button class="hlo" id="nHo">Ouvrir dans la Bible</button>';
+  Ed.innerHTML='<div class="dt">'+(c.col==="l"?"Passage aimé":"Surbrillance de la Bible")+(c.lk&&c.col!=="l"?" · J\'aime":"")+'</div><div class="hlc" style="--a:'+p.a+';--b:'+p.b+';--i:'+p.i+';--k:'+p.k+';--s:'+p.s+'"><span class="q">“</span><p class="v">'+esc(c.v)+'</p><div class="ft"><b>— '+esc(c.ref)+'</b><small>Louis Segond 1910</small></div><div class="dd">'+(c.col==="l"?"Aimé":"Surlignée")+' le '+f(c.c)+'</div></div><button class="hlo" id="nHo">Ouvrir dans la Bible</button>';
   qq("nHo").onclick=()=>open("bible","#"+c.key)}
  function editor(){qq("nDel").style.visibility=cur&&!cur.ro?"visible":"hidden";
   if(!cur){Ed.innerHTML='<div class="em">Aucune note sélectionnée</div>';return}
